@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { NotesPanel } from "./app/notes/components/NotesPanel";
-import { AiSpacePanel } from "./app/aispace/components/AiSpacePanel";
-import { ServerStatus } from "./app/settings/components/ServerStatus";
-import { RepoProvider, useRepo } from "./app/data/repo.context";
-import { SpacesList } from "./app/spaces/components/SpacesList";
+import { NotesPanel } from "./notes/components/NotesPanel";
+import { AiSpacePanel } from "./aispace/components/AiSpacePanel";
+import { ServerStatus } from "./settings/components/ServerStatus";
+import { RepoProvider, useRepo } from "./data/repo.context";
+import { SpacesList } from "./spaces/components/SpacesList";
 
 function AppContent() {
   const { activeSpace, leaveSpace } = useRepo();
