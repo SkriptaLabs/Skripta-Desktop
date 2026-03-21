@@ -1,0 +1,32 @@
+{
+  "name": "@scripta/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@automerge/automerge": "^2",
+    "@automerge/automerge-repo": "^2",
+    "@automerge/automerge-repo-network-websocket": "^2.5.4",
+    "@automerge/automerge-repo-storage-nodefs": "^2",
+    "@modelcontextprotocol/sdk": "^1",
+    "cors": "^2",
+    "express": "^5",
+    "uuid": "^11",
+    "ws": "^8.19.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/cors": "^2",
+    "@types/express": "^5",
+    "@types/node": "^20",
+    "@types/uuid": "^10",
+    "@types/ws": "^8.18.1",
+    "tsx": "^4",
+    "typescript": "^5"
+  }
+}
