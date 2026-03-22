@@ -1,5 +1,6 @@
 import { createSignal, createEffect, Show } from "solid-js";
 import type { Space } from "../spaces.types";
+import { useI18n } from "solid-compose";
 
 interface SpaceFormProps {
   existingSpace?: Space;
@@ -11,6 +12,7 @@ export function SpaceForm(props: SpaceFormProps) {
   const [name, setName] = createSignal(props.existingSpace?.name ?? "");
   const [description, setDescription] = createSignal(props.existingSpace?.description ?? "");
   const [error, setError] = createSignal<string | null>(null);
+  const t = useI18n();
 
   createEffect(() => {
     if (props.existingSpace) {
@@ -27,11 +29,11 @@ export function SpaceForm(props: SpaceFormProps) {
     const d = description().trim();
 
     if (!n) {
-      setError("Name ist erforderlich.");
+      setError(t('spaceForm.nameRequired'));
       return;
     }
     if (!d) {
-      setError("Beschreibung ist erforderlich.");
+      setError(t('spaceForm.descriptionRequired'));
       return;
     }
 
@@ -45,7 +47,7 @@ export function SpaceForm(props: SpaceFormProps) {
   return (
     <form onSubmit={handleSubmit} class="flex flex-col gap-3 p-4 border border-border rounded bg-muted">
       <h3 class="text-sm font-medium">
-        {props.existingSpace ? "Space bearbeiten" : "Neuer Space"}
+        {props.existingSpace ? t('spaceForm.editTitle') : t('spaceForm.createTitle')}
       </h3>
 
       <Show when={error()}>
@@ -55,14 +57,14 @@ export function SpaceForm(props: SpaceFormProps) {
       <input
         autofocus
         type="text"
-        placeholder="Name des Spaces…"
+        placeholder={t('spaceForm.namePlaceholder')}
         value={name()}
         onInput={(e) => setName(e.currentTarget.value)}
         class="text-sm px-3 py-1.5 border border-border rounded bg-background focus:outline-none"
       />
 
       <textarea
-        placeholder="Wofür ist dieser Space? (z.B. Forschungsthema, Seminararbeit…)"
+        placeholder={t('spaceForm.descriptionPlaceholder')}
         value={description()}
         onInput={(e) => setDescription(e.currentTarget.value)}
         rows={3}
@@ -75,13 +77,13 @@ export function SpaceForm(props: SpaceFormProps) {
           onClick={props.onCancel}
           class="text-sm px-3 py-1.5 border border-border rounded hover:bg-muted transition-colors"
         >
-          Abbrechen
+          {t('spaceForm.cancel')}
         </button>
         <button
           type="submit"
           class="text-sm px-3 py-1.5 bg-foreground text-background rounded hover:opacity-80 transition-opacity"
         >
-          {props.existingSpace ? "Speichern" : "Erstellen"}
+          {props.existingSpace ? t('spaceForm.save') : t('spaceForm.create')}
         </button>
       </div>
     </form>

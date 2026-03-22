@@ -1,0 +1,63 @@
+{
+  "app.title": "Scripta",
+  "theme.light": "Hell",
+  "theme.dark": "Dunkel",
+  "theme.highContrast": "Hoher Kontrast",
+  "language": "Sprache",
+
+  "menu.notes": "Notizen",
+  "menu.sources": "Quellen",
+
+  "nav.back": "←",
+  "nav.backToSpaces": "Zurück zur Space-Übersicht",
+  "nav.clickToRename": "Klicken um umzubenennen",
+  "nav.hideAiSpace": "KI-Space ausblenden",
+  "nav.showAiSpace": "KI-Space anzeigen",
+
+  "notes.title": "Meine Notizen",
+  "notes.newNote": "+ Neue Notiz",
+  "notes.searchPlaceholder": "Suchen…",
+  "notes.searchButton": "Suchen",
+  "notes.titlePlaceholder": "Titel…",
+  "notes.create": "Erstellen",
+  "notes.loading": "Lade…",
+  "notes.empty": "Noch keine Notizen.",
+  "notes.untitled": "(Ohne Titel)",
+  "notes.delete": "Löschen",
+
+  "sources.comingSoon": "Quellen – kommt bald",
+
+  "aispace.title": "KI-Space",
+  "aispace.readOnly": "Nur lesend",
+  "aispace.description": "Inhalte die ein Agent hier angelegt hat. Prüfe und übernimm in deinen Userspace.",
+  "aispace.loading": "Lade…",
+  "aispace.empty": "Keine Entwürfe vorhanden.",
+  "aispace.untitled": "(Ohne Titel)",
+  "aispace.adopt": "↑ Übernehmen",
+
+  "server.starting": "Server startet…",
+  "server.running": "Server läuft",
+  "server.copyEndpoint": "MCP-Endpunkt kopieren",
+  "server.copied": "Kopiert ✓",
+
+  "spaces.title": "Spaces",
+  "spaces.subtitle": "Wähle einen Space für deine Recherche oder erstelle einen neuen.",
+  "spaces.newSpace": "+ Neuer Space",
+  "spaces.loading": "Lade…",
+  "spaces.empty": "Noch keine Spaces vorhanden.",
+  "spaces.emptyHint": "Erstelle deinen ersten Space, um mit der Recherche zu beginnen.",
+  "spaces.createdAt": "Erstellt:",
+  "spaces.edit": "Bearbeiten",
+  "spaces.delete": "Löschen",
+  "spaces.confirmNo": "Nein",
+
+  "spaceForm.editTitle": "Space bearbeiten",
+  "spaceForm.createTitle": "Neuer Space",
+  "spaceForm.nameRequired": "Name ist erforderlich.",
+  "spaceForm.descriptionRequired": "Beschreibung ist erforderlich.",
+  "spaceForm.namePlaceholder": "Name des Spaces…",
+  "spaceForm.descriptionPlaceholder": "Wofür ist dieser Space? (z.B. Forschungsthema, Seminararbeit…)",
+  "spaceForm.cancel": "Abbrechen",
+  "spaceForm.save": "Speichern",
+  "spaceForm.create": "Erstellen"
+}

@@ -1,0 +1,63 @@
+{
+  "app.title": "Scripta",
+  "theme.light": "فاتح",
+  "theme.dark": "داكن",
+  "theme.highContrast": "تباين عالي",
+  "language": "اللغة",
+
+  "menu.notes": "ملاحظات",
+  "menu.sources": "مصادر",
+
+  "nav.back": "→",
+  "nav.backToSpaces": "العودة إلى نظرة عامة على المساحات",
+  "nav.clickToRename": "انقر لإعادة التسمية",
+  "nav.hideAiSpace": "إخفاء مساحة الذكاء الاصطناعي",
+  "nav.showAiSpace": "إظهار مساحة الذكاء الاصطناعي",
+
+  "notes.title": "ملاحظاتي",
+  "notes.newNote": "+ ملاحظة جديدة",
+  "notes.searchPlaceholder": "بحث…",
+  "notes.searchButton": "بحث",
+  "notes.titlePlaceholder": "العنوان…",
+  "notes.create": "إنشاء",
+  "notes.loading": "جارٍ التحميل…",
+  "notes.empty": "لا توجد ملاحظات بعد.",
+  "notes.untitled": "(بدون عنوان)",
+  "notes.delete": "حذف",
+
+  "sources.comingSoon": "المصادر – قريبًا",
+
+  "aispace.title": "مساحة الذكاء الاصطناعي",
+  "aispace.readOnly": "للقراءة فقط",
+  "aispace.description": "محتوى أنشأه وكيل. راجعه وانقله إلى مساحتك الخاصة.",
+  "aispace.loading": "جارٍ التحميل…",
+  "aispace.empty": "لا توجد مسودات.",
+  "aispace.untitled": "(بدون عنوان)",
+  "aispace.adopt": "↑ اعتماد",
+
+  "server.starting": "جارٍ بدء الخادم…",
+  "server.running": "الخادم يعمل",
+  "server.copyEndpoint": "نسخ نقطة نهاية MCP",
+  "server.copied": "تم النسخ ✓",
+
+  "spaces.title": "المساحات",
+  "spaces.subtitle": "اختر مساحة لبحثك أو أنشئ واحدة جديدة.",
+  "spaces.newSpace": "+ مساحة جديدة",
+  "spaces.loading": "جارٍ التحميل…",
+  "spaces.empty": "لا توجد مساحات بعد.",
+  "spaces.emptyHint": "أنشئ مساحتك الأولى لبدء البحث.",
+  "spaces.createdAt": "تاريخ الإنشاء:",
+  "spaces.edit": "تعديل",
+  "spaces.delete": "حذف",
+  "spaces.confirmNo": "لا",
+
+  "spaceForm.editTitle": "تعديل المساحة",
+  "spaceForm.createTitle": "مساحة جديدة",
+  "spaceForm.nameRequired": "الاسم مطلوب.",
+  "spaceForm.descriptionRequired": "الوصف مطلوب.",
+  "spaceForm.namePlaceholder": "اسم المساحة…",
+  "spaceForm.descriptionPlaceholder": "ما هو هذا الفضاء؟ (مثلاً موضوع بحث، ورقة ندوة…)",
+  "spaceForm.cancel": "إلغاء",
+  "spaceForm.save": "حفظ",
+  "spaceForm.create": "إنشاء"
+}

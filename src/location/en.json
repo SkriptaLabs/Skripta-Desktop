@@ -1,0 +1,63 @@
+{
+  "app.title": "Scripta",
+  "theme.light": "Light",
+  "theme.dark": "Dark",
+  "theme.highContrast": "High Contrast",
+  "language": "Language",
+
+  "menu.notes": "Notes",
+  "menu.sources": "Sources",
+
+  "nav.back": "←",
+  "nav.backToSpaces": "Back to Spaces overview",
+  "nav.clickToRename": "Click to rename",
+  "nav.hideAiSpace": "Hide AI Space",
+  "nav.showAiSpace": "Show AI Space",
+
+  "notes.title": "My Notes",
+  "notes.newNote": "+ New Note",
+  "notes.searchPlaceholder": "Search…",
+  "notes.searchButton": "Search",
+  "notes.titlePlaceholder": "Title…",
+  "notes.create": "Create",
+  "notes.loading": "Loading…",
+  "notes.empty": "No notes yet.",
+  "notes.untitled": "(Untitled)",
+  "notes.delete": "Delete",
+
+  "sources.comingSoon": "Sources – coming soon",
+
+  "aispace.title": "AI Space",
+  "aispace.readOnly": "Read-only",
+  "aispace.description": "Content created by an agent. Review and adopt to your Userspace.",
+  "aispace.loading": "Loading…",
+  "aispace.empty": "No drafts available.",
+  "aispace.untitled": "(Untitled)",
+  "aispace.adopt": "↑ Adopt",
+
+  "server.starting": "Server starting…",
+  "server.running": "Server running",
+  "server.copyEndpoint": "Copy MCP endpoint",
+  "server.copied": "Copied ✓",
+
+  "spaces.title": "Spaces",
+  "spaces.subtitle": "Choose a Space for your research or create a new one.",
+  "spaces.newSpace": "+ New Space",
+  "spaces.loading": "Loading…",
+  "spaces.empty": "No Spaces yet.",
+  "spaces.emptyHint": "Create your first Space to start researching.",
+  "spaces.createdAt": "Created:",
+  "spaces.edit": "Edit",
+  "spaces.delete": "Delete",
+  "spaces.confirmNo": "No",
+
+  "spaceForm.editTitle": "Edit Space",
+  "spaceForm.createTitle": "New Space",
+  "spaceForm.nameRequired": "Name is required.",
+  "spaceForm.descriptionRequired": "Description is required.",
+  "spaceForm.namePlaceholder": "Space name…",
+  "spaceForm.descriptionPlaceholder": "What is this Space for? (e.g. research topic, seminar paper…)",
+  "spaceForm.cancel": "Cancel",
+  "spaceForm.save": "Save",
+  "spaceForm.create": "Create"
+}

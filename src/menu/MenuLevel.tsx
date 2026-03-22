@@ -58,7 +58,7 @@ export function MenuLevel(props: MenuLevelProps) {
                   activeId() === item.id ? styles().active : styles().inactive
                 }`}
               >
-                {item.label}
+                {typeof item.label === 'function' ? item.label() : item.label}
               </button>
             )}
           </For>

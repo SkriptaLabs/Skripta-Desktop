@@ -11,6 +11,10 @@ export default defineConfig({
   // Tauri: verhindere, dass Vite das Terminal überschreibt
   clearScreen: false,
 
+  build: {
+    target: "esnext",
+  },
+
   server: {
     port: 1420,
     strictPort: true,

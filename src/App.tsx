@@ -8,26 +8,42 @@ import { SpacesList } from "./spaces/components/SpacesList";
 import { useSpaces } from "./spaces/service/spaces.service";
 import { MenuLevel } from "./menu/MenuLevel";
 import type { MenuItem } from "./menu/menu.types";
-import { createThemeEffect, useTheme } from 'solid-compose';
+import { createThemeEffect, useTheme, useI18n, useLocale } from 'solid-compose';
+
+function LanguageSwitcher() {
+  const [locale, { setLanguageTag }] = useLocale();
+  return <select
+    class="text-sm px-2 py-1 rounded border border-border bg-background text-foreground"
+    value={locale.languageTag}
+    onChange={(e) => setLanguageTag(e.currentTarget.value)}
+  >
+    {locale.supportedLanguageTags.map((tag: string) => (
+      <option value={tag}>{tag.toUpperCase()}</option>
+    ))}
+  </select>;
+}
 
 function ThemeSwitcher() {
   const [theme, setTheme] = useTheme();
+  const t = useI18n();
   return <select
     class="text-sm px-2 py-1 rounded border border-border bg-background text-foreground"
     value={theme()}
     onChange={(e) => setTheme(e.currentTarget.value)}
   >
-    <option value="light">Light</option>
-    <option value="dark">Dark</option>
-    <option value="high_contrast">High Contrast</option>
+    <option value="light">{t('theme.light')}</option>
+    <option value="dark">{t('theme.dark')}</option>
+    <option value="high_contrast">{t('theme.highContrast')}</option>
   </select>
 };
 
 function StartupScreen() {
+  const t = useI18n();
   return <div class="flex flex-col h-screen bg-background text-foreground">
     <header class="flex items-center justify-between px-4 py-2 border-b border-border">
-      <h1 class="text-lg font-semibold tracking-tight">Scripta</h1>
+      <h1 class="text-lg font-semibold tracking-tight">{t('app.title')}</h1>
       <div class="flex items-center gap-3">
+        <LanguageSwitcher />
         <ThemeSwitcher />
         <ServerStatus />
       </div>
@@ -44,6 +60,7 @@ function AppContent() {
   const [showAiSpace, setShowAiSpace] = createSignal(false);
   const [editingName, setEditingName] = createSignal(false);
   const [nameValue, setNameValue] = createSignal("");
+  const t = useI18n();
   let nameInputRef: HTMLInputElement | undefined;
 
   createThemeEffect();
@@ -65,8 +82,8 @@ function AppContent() {
   };
 
   const mainMenuItems: MenuItem[] = [
-    { id: "notes", label: "Notizen", component: NotesPanel },
-    { id: "sources", label: "Quellen", component: SourcesPanel },
+    { id: "notes", label: () => t('menu.notes'), component: NotesPanel },
+    { id: "sources", label: () => t('menu.sources'), component: SourcesPanel },
   ];
 
   return (
@@ -81,7 +98,7 @@ function AppContent() {
               <button
                 onClick={leaveSpace}
                 class="text-sm px-2 py-1 rounded border border-border hover:bg-muted transition-colors"
-                title="Zurück zur Space-Übersicht"
+                title={t('nav.backToSpaces')}
               >
                 ←
               </button>
@@ -95,7 +112,7 @@ function AppContent() {
                         setNameValue(space().name);
                         setEditingName(true);
                       }}
-                      title="Klicken um umzubenennen"
+                      title={t('nav.clickToRename')}
                     >
                       {space().name}
                     </h1>
@@ -118,13 +135,14 @@ function AppContent() {
               </div>
             </div>
             <div class="flex items-center gap-3">
+              <LanguageSwitcher />
               <ThemeSwitcher />
               <ServerStatus />
               <button
                 onClick={() => setShowAiSpace(!showAiSpace())}
                 class="text-sm px-3 py-1 rounded border border-border hover:bg-muted transition-colors"
               >
-                {showAiSpace() ? "KI-Space ausblenden" : "KI-Space anzeigen"}
+                {showAiSpace() ? t('nav.hideAiSpace') : t('nav.showAiSpace')}
               </button>
             </div>
           </header>

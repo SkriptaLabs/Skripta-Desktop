@@ -3,6 +3,7 @@ import { useSpaces } from "../service/spaces.service";
 import { useRepo } from "../../data/repo.context";
 import { SpaceForm } from "./SpaceForm";
 import type { Space } from "../spaces.types";
+import { useI18n } from "solid-compose";
 
 export function SpacesList() {
   const { spacesHandle, selectSpace, ready, repo } = useRepo();
@@ -10,6 +11,7 @@ export function SpacesList() {
   const [creating, setCreating] = createSignal(false);
   const [editing, setEditing] = createSignal<Space | null>(null);
   const [confirmDelete, setConfirmDelete] = createSignal<string | null>(null);
+  const t = useI18n();
 
   const handleCreate = (data: { name: string; description: string }) => {
     addSpace(data);
@@ -33,7 +35,7 @@ export function SpacesList() {
       when={ready() && !loading()}
       fallback={
         <div class="flex items-center justify-center h-full">
-          <p class="text-sm text-foreground/50">Lade…</p>
+          <p class="text-sm text-foreground/50">{t('spaces.loading')}</p>
         </div>
       }
     >
@@ -41,9 +43,9 @@ export function SpacesList() {
         {/* Header */}
         <div class="flex items-center justify-between">
           <div>
-            <h2 class="text-lg font-semibold">Spaces</h2>
+            <h2 class="text-lg font-semibold">{t('spaces.title')}</h2>
             <p class="text-sm text-foreground/50 mt-1">
-              Wähle einen Space für deine Recherche oder erstelle einen neuen.
+              {t('spaces.subtitle')}
             </p>
           </div>
           <Show when={!creating() && !editing()}>
@@ -51,7 +53,7 @@ export function SpacesList() {
               onClick={() => setCreating(true)}
               class="text-sm px-3 py-1.5 bg-foreground text-background rounded hover:opacity-80 transition-opacity"
             >
-              + Neuer Space
+              {t('spaces.newSpace')}
             </button>
           </Show>
         </div>
@@ -80,9 +82,9 @@ export function SpacesList() {
           when={spaces().length > 0 || creating()}
           fallback={
             <div class="text-center py-12">
-              <p class="text-sm text-foreground/40">Noch keine Spaces vorhanden.</p>
+              <p class="text-sm text-foreground/40">{t('spaces.empty')}</p>
               <p class="text-xs text-foreground/30 mt-1">
-                Erstelle deinen ersten Space, um mit der Recherche zu beginnen.
+                {t('spaces.emptyHint')}
               </p>
             </div>
           }
@@ -99,7 +101,7 @@ export function SpacesList() {
                     {space.description}
                   </p>
                   <p class="text-xs text-foreground/30 mt-2">
-                    Erstellt: {new Date(space.createdAt).toLocaleDateString("de-DE")}
+                    {t('spaces.createdAt')} {new Date(space.createdAt).toLocaleDateString()}
                   </p>
                 </button>
 
@@ -111,7 +113,7 @@ export function SpacesList() {
                       setCreating(false);
                     }}
                     class="text-xs px-2 py-1 border border-border rounded hover:bg-muted transition-colors"
-                    title="Bearbeiten"
+                    title={t('spaces.edit')}
                   >
                     ✎
                   </button>
@@ -124,7 +126,7 @@ export function SpacesList() {
                           setConfirmDelete(space.id);
                         }}
                         class="text-xs px-2 py-1 border border-border rounded hover:bg-muted text-foreground/40 hover:text-red-500 transition-colors"
-                        title="Löschen"
+                        title={t('spaces.delete')}
                       >
                         ✕
                       </button>
@@ -138,7 +140,7 @@ export function SpacesList() {
                         }}
                         class="text-xs px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
                       >
-                        Löschen
+                        {t('spaces.delete')}
                       </button>
                       <button
                         onClick={(e) => {
@@ -147,7 +149,7 @@ export function SpacesList() {
                         }}
                         class="text-xs px-2 py-1 border border-border rounded hover:bg-muted transition-colors"
                       >
-                        Nein
+                        {t('spaces.confirmNo')}
                       </button>
                     </div>
                   </Show>
