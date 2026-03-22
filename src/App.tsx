@@ -4,10 +4,12 @@ import { AiSpacePanel } from "./aispace/components/AiSpacePanel";
 import { ServerStatus } from "./settings/components/ServerStatus";
 import { RepoProvider, useRepo } from "./data/repo.context";
 import { SpacesList } from "./spaces/components/SpacesList";
+import { SearchPanel } from "./search/components/SearchPanel";
 
 function AppContent() {
   const { activeSpace, leaveSpace } = useRepo();
   const [showAiSpace, setShowAiSpace] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
 
   // No active space → show spaces list
   if (!activeSpace) {
@@ -44,6 +46,12 @@ function AppContent() {
         <div className="flex items-center gap-3">
           <ServerStatus />
           <button
+            onClick={() => setShowSearch(!showSearch)}
+            className="text-sm px-3 py-1 rounded border border-border hover:bg-muted transition-colors"
+          >
+            {showSearch ? "Suche ausblenden" : "Online-Suche"}
+          </button>
+          <button
             onClick={() => setShowAiSpace(!showAiSpace)}
             className="text-sm px-3 py-1 rounded border border-border hover:bg-muted transition-colors"
           >
@@ -53,9 +61,14 @@ function AppContent() {
       </header>
 
       <div className="flex flex-1 overflow-hidden">
-        <main className={`flex-1 overflow-auto ${showAiSpace ? "border-r border-border" : ""}`}>
+        <main className={`flex-1 overflow-auto ${showSearch || showAiSpace ? "border-r border-border" : ""}`}>
           <NotesPanel />
         </main>
+        {showSearch && (
+          <aside className="w-96 overflow-auto border-r border-border">
+            <SearchPanel />
+          </aside>
+        )}
         {showAiSpace && (
           <aside className="w-96 overflow-auto">
             <AiSpacePanel />
