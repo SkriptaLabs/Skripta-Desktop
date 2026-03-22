@@ -89,7 +89,7 @@ export function getSpacesHandle() {
   };
 }
 
-export async function getSpaceDocHandles(spaceId: string) {
+export async function getSpaceDocHandles(spaceId: number) {
   const space = getSpacesHandle().docSync().spaces[spaceId];
   if (!space) throw new Error(`Space '${spaceId}' not found`);
 

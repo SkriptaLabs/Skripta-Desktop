@@ -8,7 +8,8 @@
     "strict": true,
     "noEmit": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
     "resolveJsonModule": true,
     "paths": {
       "@/*": ["./src/*"]

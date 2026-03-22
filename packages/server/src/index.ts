@@ -9,9 +9,9 @@ import { registerMcpRoutes } from "./mcp/server.js";
 const PORT_FILE = join(tmpdir(), "scripta-server.port");
 
 // ── Active-Space State ──────────────────────────────────────────────
-let _activeSpaceId: string | null = null;
+let _activeSpaceId: number | null = null;
 
-export function getActiveSpaceId(): string | null {
+export function getActiveSpaceId(): number | null {
   return _activeSpaceId;
 }
 
@@ -30,8 +30,8 @@ async function main() {
   // ── Active-Space Endpoints ────────────────────────────────────────
   app.post("/active-space", (req, res) => {
     const { spaceId } = req.body;
-    if (!spaceId || typeof spaceId !== "string") {
-      res.status(400).json({ error: "spaceId is required" });
+    if (typeof spaceId !== "number") {
+      res.status(400).json({ error: "spaceId (number) is required" });
       return;
     }
     const spaces = getSpacesHandle().docSync().spaces;
@@ -45,7 +45,7 @@ async function main() {
   });
 
   app.get("/active-space", (_req, res) => {
-    if (!_activeSpaceId) {
+    if (_activeSpaceId === null) {
       res.json(null);
       return;
     }

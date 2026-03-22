@@ -1,12 +1,12 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import solid from "vite-plugin-solid";
 import tailwindcss from "@tailwindcss/vite";
 import wasm from "vite-plugin-wasm";
 import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), wasm()],
+  plugins: [solid(), tailwindcss(), wasm()],
 
   // Tauri: verhindere, dass Vite das Terminal überschreibt
   clearScreen: false,

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { createSignal, createEffect, onCleanup, type Accessor } from "solid-js";
 import { v4 as uuid } from "uuid";
 import type { Note, CreateNoteDto } from "../notes.types";
 import type { DocHandle } from "@automerge/automerge-repo";
@@ -16,101 +16,95 @@ function notesFromHandle(
 }
 
 export function useNotes(
-  handle: DocHandle<NotesCollection> | null,
+  handle: Accessor<DocHandle<NotesCollection> | null>,
   space?: "userspace" | "aispace"
 ) {
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [notes, setNotes] = createSignal<Note[]>([]);
+  const [loading, setLoading] = createSignal(true);
+  const [error, setError] = createSignal<string | null>(null);
 
-  const refresh = useCallback(() => {
-    if (!handle) return;
-    setNotes(notesFromHandle(handle, space));
-  }, [handle, space]);
+  createEffect(() => {
+    const h = handle();
+    if (!h) return;
 
-  useEffect(() => {
-    if (!handle) return;
+    const refresh = () => setNotes(notesFromHandle(h, space));
 
     // Initial load once handle is ready
-    handle.whenReady().then(() => {
+    h.whenReady().then(() => {
       refresh();
       setLoading(false);
     });
 
     // Live-Updates
-    const onChange = () => refresh();
-    handle.on("change", onChange);
-    return () => { handle.off("change", onChange); };
-  }, [handle, refresh]);
+    h.on("change", refresh);
+    onCleanup(() => h.off("change", refresh));
+  });
 
-  const addNote = useCallback(
-    (dto: CreateNoteDto) => {
-      if (!handle) return;
-      const now = new Date().toISOString();
-      const note: Note = {
-        id: uuid(),
-        title: dto.title,
-        content: dto.content,
-        space: dto.space,
-        tags: dto.tags ?? [],
-        createdAt: now,
-        updatedAt: now,
-      };
-      handle.change((doc) => {
-        doc.notes[note.id] = note;
-      });
-      return note;
-    },
-    [handle]
-  );
+  const addNote = (dto: CreateNoteDto) => {
+    const h = handle();
+    if (!h) return;
+    const now = new Date().toISOString();
+    const note: Note = {
+      id: uuid(),
+      title: dto.title,
+      content: dto.content,
+      space: dto.space,
+      tags: dto.tags ?? [],
+      createdAt: now,
+      updatedAt: now,
+    };
+    h.change((doc) => {
+      doc.notes[note.id] = note;
+    });
+    return note;
+  };
 
-  const editNote = useCallback(
-    (id: string, patch: Partial<Pick<Note, "title" | "content" | "tags">>) => {
-      if (!handle) return;
-      handle.change((doc) => {
-        const note = doc.notes[id];
-        if (!note) return;
-        if (patch.title !== undefined) note.title = patch.title;
-        if (patch.content !== undefined) note.content = patch.content;
-        if (patch.tags !== undefined) note.tags = patch.tags;
-        note.updatedAt = new Date().toISOString();
-      });
-    },
-    [handle]
-  );
+  const editNote = (id: string, patch: Partial<Pick<Note, "title" | "content" | "tags">>) => {
+    const h = handle();
+    if (!h) return;
+    h.change((doc) => {
+      const note = doc.notes[id];
+      if (!note) return;
+      if (patch.title !== undefined) note.title = patch.title;
+      if (patch.content !== undefined) note.content = patch.content;
+      if (patch.tags !== undefined) note.tags = patch.tags;
+      note.updatedAt = new Date().toISOString();
+    });
+  };
 
-  const removeNote = useCallback(
-    (id: string) => {
-      if (!handle) return;
-      handle.change((doc) => {
-        delete doc.notes[id];
-      });
-    },
-    [handle]
-  );
+  const removeNote = (id: string) => {
+    const h = handle();
+    if (!h) return;
+    h.change((doc) => {
+      delete doc.notes[id];
+    });
+  };
 
-  const search = useCallback(
-    (query: string) => {
-      if (!handle) return;
-      if (!query.trim()) {
-        refresh();
-        return;
-      }
-      const lower = query.toLowerCase();
-      const all = notesFromHandle(handle, space);
-      setNotes(
-        all.filter(
-          (n) =>
-            n.title.toLowerCase().includes(lower) ||
-            n.content.toLowerCase().includes(lower) ||
-            (n.tags ?? []).some((t) => t.toLowerCase().includes(lower))
-        )
-      );
-    },
-    [handle, space, refresh]
-  );
+  const search = (query: string) => {
+    const h = handle();
+    if (!h) return;
+    if (!query.trim()) {
+      setNotes(notesFromHandle(h, space));
+      return;
+    }
+    const lower = query.toLowerCase();
+    const all = notesFromHandle(h, space);
+    setNotes(
+      all.filter(
+        (n) =>
+          n.title.toLowerCase().includes(lower) ||
+          n.content.toLowerCase().includes(lower) ||
+          (n.tags ?? []).some((t) => t.toLowerCase().includes(lower))
+      )
+    );
+  };
 
-  return { notes, loading, error, addNote, editNote, removeNote, search, reload: refresh };
+  const reload = () => {
+    const h = handle();
+    if (h) setNotes(notesFromHandle(h, space));
+  };
+
+  return { notes, loading, error, addNote, editNote, removeNote, search, reload };
 }
 
 /** Verschiebt eine Notiz zwischen Handles (z.B. aispace → userspace) */

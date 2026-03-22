@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { createSignal, createEffect, onCleanup, type Accessor } from "solid-js";
 import type { Source } from "../sources.types";
 import type { DocHandle } from "@automerge/automerge-repo";
 import type { SourcesCollection } from "../../data/repo.context";
@@ -9,52 +9,47 @@ function sourcesFromHandle(handle: DocHandle<SourcesCollection>): Source[] {
   return Object.values(doc.sources);
 }
 
-export function useSources(handle: DocHandle<SourcesCollection> | null) {
-  const [sources, setSources] = useState<Source[]>([]);
-  const [loading, setLoading] = useState(true);
+export function useSources(handle: Accessor<DocHandle<SourcesCollection> | null>) {
+  const [sources, setSources] = createSignal<Source[]>([]);
+  const [loading, setLoading] = createSignal(true);
 
-  const refresh = useCallback(() => {
-    if (!handle) return;
-    setSources(sourcesFromHandle(handle));
-  }, [handle]);
+  createEffect(() => {
+    const h = handle();
+    if (!h) return;
 
-  useEffect(() => {
-    if (!handle) return;
+    const refresh = () => setSources(sourcesFromHandle(h));
 
-    handle.whenReady().then(() => {
+    h.whenReady().then(() => {
       refresh();
       setLoading(false);
     });
 
-    const onChange = () => refresh();
-    handle.on("change", onChange);
-    return () => { handle.off("change", onChange); };
-  }, [handle, refresh]);
+    h.on("change", refresh);
+    onCleanup(() => h.off("change", refresh));
+  });
 
-  const search = useCallback(
-    (query: string) => {
-      if (!handle) return;
-      if (!query.trim()) {
-        refresh();
-        return;
-      }
-      const lower = query.toLowerCase();
-      const all = sourcesFromHandle(handle);
-      setSources(
-        all.filter(
-          (s) =>
-            s.title.toLowerCase().includes(lower) ||
-            (s.authors ?? []).some((a) => a.toLowerCase().includes(lower)) ||
-            s.quotes.some(
-              (q) =>
-                q.text.toLowerCase().includes(lower) ||
-                (q.note ?? "").toLowerCase().includes(lower)
-            )
-        )
-      );
-    },
-    [handle, refresh]
-  );
+  const search = (query: string) => {
+    const h = handle();
+    if (!h) return;
+    if (!query.trim()) {
+      setSources(sourcesFromHandle(h));
+      return;
+    }
+    const lower = query.toLowerCase();
+    const all = sourcesFromHandle(h);
+    setSources(
+      all.filter(
+        (s) =>
+          s.title.toLowerCase().includes(lower) ||
+          (s.authors ?? []).some((a) => a.toLowerCase().includes(lower)) ||
+          s.quotes.some(
+            (q) =>
+              q.text.toLowerCase().includes(lower) ||
+              (q.note ?? "").toLowerCase().includes(lower)
+          )
+      )
+    );
+  };
 
   return { sources, loading, search };
 }

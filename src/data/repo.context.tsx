@@ -1,11 +1,12 @@
 import {
   createContext,
   useContext,
-  useState,
-  useEffect,
-  useCallback,
-  type ReactNode,
-} from "react";
+  createSignal,
+  onMount,
+  onCleanup,
+  type ParentProps,
+  type Accessor,
+} from "solid-js";
 import { getOrCreateClientRepo } from "./repo";
 import { getServerPort } from "../settings/data-access/server.api";
 import type { DocHandle, Repo } from "@automerge/automerge-repo";
@@ -23,43 +24,43 @@ export interface SourcesCollection {
 }
 
 interface RepoContextValue {
-  repo: Repo | null;
-  spacesHandle: DocHandle<SpacesCollection> | null;
-  activeSpace: Space | null;
-  userspaceHandle: DocHandle<NotesCollection> | null;
-  aispaceHandle: DocHandle<NotesCollection> | null;
-  sourcesHandle: DocHandle<SourcesCollection> | null;
-  selectSpace: (spaceId: string) => Promise<void>;
+  repo: Accessor<Repo | null>;
+  spacesHandle: Accessor<DocHandle<SpacesCollection> | null>;
+  activeSpace: Accessor<Space | null>;
+  userspaceHandle: Accessor<DocHandle<NotesCollection> | null>;
+  aispaceHandle: Accessor<DocHandle<NotesCollection> | null>;
+  sourcesHandle: Accessor<DocHandle<SourcesCollection> | null>;
+  selectSpace: (spaceId: number) => Promise<void>;
   leaveSpace: () => Promise<void>;
-  ready: boolean;
-  port: number | null;
+  ready: Accessor<boolean>;
+  port: Accessor<number | null>;
 }
 
 const RepoContext = createContext<RepoContextValue>({
-  repo: null,
-  spacesHandle: null,
-  activeSpace: null,
-  userspaceHandle: null,
-  aispaceHandle: null,
-  sourcesHandle: null,
+  repo: () => null,
+  spacesHandle: () => null,
+  activeSpace: () => null,
+  userspaceHandle: () => null,
+  aispaceHandle: () => null,
+  sourcesHandle: () => null,
   selectSpace: async () => {},
   leaveSpace: async () => {},
-  ready: false,
-  port: null,
+  ready: () => false,
+  port: () => null,
 });
 
-export function RepoProvider({ children }: { children: ReactNode }) {
-  const [port, setPort] = useState<number | null>(null);
-  const [repo, setRepo] = useState<Repo | null>(null);
-  const [spacesHandle, setSpacesHandle] = useState<DocHandle<SpacesCollection> | null>(null);
-  const [activeSpace, setActiveSpace] = useState<Space | null>(null);
-  const [userspaceHandle, setUserspaceHandle] = useState<DocHandle<NotesCollection> | null>(null);
-  const [aispaceHandle, setAispaceHandle] = useState<DocHandle<NotesCollection> | null>(null);
-  const [sourcesHandle, setSourcesHandle] = useState<DocHandle<SourcesCollection> | null>(null);
-  const [ready, setReady] = useState(false);
+export function RepoProvider(props: ParentProps) {
+  const [port, setPort] = createSignal<number | null>(null);
+  const [repo, setRepo] = createSignal<Repo | null>(null);
+  const [spacesHandle, setSpacesHandle] = createSignal<DocHandle<SpacesCollection> | null>(null);
+  const [activeSpace, setActiveSpace] = createSignal<Space | null>(null);
+  const [userspaceHandle, setUserspaceHandle] = createSignal<DocHandle<NotesCollection> | null>(null);
+  const [aispaceHandle, setAispaceHandle] = createSignal<DocHandle<NotesCollection> | null>(null);
+  const [sourcesHandle, setSourcesHandle] = createSignal<DocHandle<SourcesCollection> | null>(null);
+  const [ready, setReady] = createSignal(false);
 
   // Phase 1: Connect to server and load spaces doc
-  useEffect(() => {
+  onMount(() => {
     let cancelled = false;
     let tries = 0;
 
@@ -92,27 +93,30 @@ export function RepoProvider({ children }: { children: ReactNode }) {
     };
 
     init();
-    return () => { cancelled = true; };
-  }, []);
+    onCleanup(() => { cancelled = true; });
+  });
 
-  const selectSpace = useCallback(async (spaceId: string) => {
-    if (!repo || !spacesHandle || !port) return;
+  const selectSpace = async (spaceId: number) => {
+    const r = repo();
+    const sh = spacesHandle();
+    const p = port();
+    if (!r || !sh || !p) return;
 
-    const doc = spacesHandle.docSync();
+    const doc = sh.docSync();
     if (!doc) return;
     const space = doc.spaces[spaceId];
     if (!space) return;
 
-    const [ush, ash, sh] = await Promise.all([
-      repo.find<NotesCollection>(space.userspaceUrl as any),
-      repo.find<NotesCollection>(space.aispaceUrl as any),
-      repo.find<SourcesCollection>(space.sourcesUrl as any),
+    const [ush, ash, srch] = await Promise.all([
+      r.find<NotesCollection>(space.userspaceUrl as any),
+      r.find<NotesCollection>(space.aispaceUrl as any),
+      r.find<SourcesCollection>(space.sourcesUrl as any),
     ]);
 
-    await Promise.all([ush.whenReady(), ash.whenReady(), sh.whenReady()]);
+    await Promise.all([ush.whenReady(), ash.whenReady(), srch.whenReady()]);
 
     // Notify server of active space
-    await fetch(`http://localhost:${port}/active-space`, {
+    await fetch(`http://localhost:${p}/active-space`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ spaceId }),
@@ -121,18 +125,19 @@ export function RepoProvider({ children }: { children: ReactNode }) {
     setActiveSpace(space);
     setUserspaceHandle(ush);
     setAispaceHandle(ash);
-    setSourcesHandle(sh);
-  }, [repo, spacesHandle, port]);
+    setSourcesHandle(srch);
+  };
 
-  const leaveSpace = useCallback(async () => {
-    if (port) {
-      await fetch(`http://localhost:${port}/active-space`, { method: "DELETE" });
+  const leaveSpace = async () => {
+    const p = port();
+    if (p) {
+      await fetch(`http://localhost:${p}/active-space`, { method: "DELETE" });
     }
     setActiveSpace(null);
     setUserspaceHandle(null);
     setAispaceHandle(null);
     setSourcesHandle(null);
-  }, [port]);
+  };
 
   return (
     <RepoContext.Provider
@@ -149,7 +154,7 @@ export function RepoProvider({ children }: { children: ReactNode }) {
         port,
       }}
     >
-      {children}
+      {props.children}
     </RepoContext.Provider>
   );
 }

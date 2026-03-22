@@ -1,21 +1,21 @@
-import { randomUUID } from "crypto";
 import { getSpacesHandle, getRepo, type Space } from "../../data/repo.js";
 import type { NotesCollection, SourcesCollection } from "../../data/repo.js";
+
+function nextId(): number {
+  const spaces = Object.values(getSpacesHandle().docSync().spaces);
+  if (spaces.length === 0) return 1;
+  return Math.max(...spaces.map((s) => s.id)) + 1;
+}
 
 export function listSpaces(): Space[] {
   return Object.values(getSpacesHandle().docSync().spaces);
 }
 
-export function getSpace(id: string): Space | undefined {
+export function getSpace(id: number): Space | undefined {
   return getSpacesHandle().docSync().spaces[id];
 }
 
 export function createSpace(dto: { name: string; description: string }): Space {
-  const existing = listSpaces();
-  if (existing.some((s) => s.name === dto.name)) {
-    throw new Error(`Space with name '${dto.name}' already exists`);
-  }
-
   const repo = getRepo();
   const userspace = repo.create<NotesCollection>({ notes: {} });
   const aispace = repo.create<NotesCollection>({ notes: {} });
@@ -23,7 +23,7 @@ export function createSpace(dto: { name: string; description: string }): Space {
 
   const now = new Date().toISOString();
   const space: Space = {
-    id: randomUUID(),
+    id: nextId(),
     name: dto.name,
     description: dto.description,
     userspaceUrl: userspace.url,
@@ -41,19 +41,12 @@ export function createSpace(dto: { name: string; description: string }): Space {
 }
 
 export function updateSpace(
-  id: string,
+  id: number,
   patch: Partial<Pick<Space, "name" | "description">>
 ): Space | undefined {
   const handle = getSpacesHandle();
   const space = handle.docSync().spaces[id];
   if (!space) return undefined;
-
-  if (patch.name !== undefined && patch.name !== space.name) {
-    const existing = listSpaces();
-    if (existing.some((s) => s.name === patch.name && s.id !== id)) {
-      throw new Error(`Space with name '${patch.name}' already exists`);
-    }
-  }
 
   handle.change((doc) => {
     const s = doc.spaces[id];
@@ -65,9 +58,10 @@ export function updateSpace(
   return handle.docSync().spaces[id];
 }
 
-export function deleteSpace(id: string): boolean {
+export function deleteSpace(id: number): boolean {
   const handle = getSpacesHandle();
-  if (!handle.docSync().spaces[id]) return false;
+  const space = handle.docSync().spaces[id];
+  if (!space) return false;
 
   handle.change((doc) => {
     delete doc.spaces[id];
