@@ -1,0 +1,19 @@
+/* Deuteranopia Theme - For users with red-green color blindness (most common type) */
+[data-theme="deuteranopia"] {
+  --color-background: #ffffff;
+  --color-foreground: #1a1a1a;
+  --color-muted: #f0f0f0;
+  --color-border: #d0d0d0;
+  /* Use blue-yellow color palette instead of red-green */
+  --color-accent: #0066cc;
+  --color-accent-hover: #004499;
+  --color-success: #0066cc; /* Blue instead of green */
+  --color-error: #ffaa00; /* Orange instead of red */
+  --color-warning: #6600cc; /* Purple for distinction */
+}
+
+[data-theme="deuteranopia"] .text-green-500,
+[data-theme="deuteranopia"] .bg-green-500 {
+  color: #0066cc;
+  background-color: #0066cc;
+}

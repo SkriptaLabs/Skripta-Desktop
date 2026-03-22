@@ -1,0 +1,12 @@
+/* Dark Theme */
+[data-theme="dark"] {
+  --color-background: #0a0a0a;
+  --color-foreground: #ededed;
+  --color-muted: #1a1a1a;
+  --color-border: #2a2a2a;
+  --color-accent: #60a5fa;
+  --color-accent-hover: #3b82f6;
+  --color-success: #22c55e;
+  --color-error: #f87171;
+  --color-warning: #fbbf24;
+}

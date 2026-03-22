@@ -8,6 +8,7 @@ import { SpacesList } from "./spaces/components/SpacesList";
 import { useSpaces } from "./spaces/service/spaces.service";
 import { MenuLevel } from "./menu/MenuLevel";
 import type { MenuItem } from "./menu/menu.types";
+import { ThemeSwitcher } from "./themes/components/ThemeSwitcher";
 
 function AppContent() {
   const { activeSpace, leaveSpace, spacesHandle } = useRepo();
@@ -45,7 +46,10 @@ function AppContent() {
         <div class="flex flex-col h-screen bg-background text-foreground">
           <header class="flex items-center justify-between px-4 py-2 border-b border-border">
             <h1 class="text-lg font-semibold tracking-tight">Scripta</h1>
-            <ServerStatus />
+            <div class="flex items-center gap-3">
+              <ThemeSwitcher />
+              <ServerStatus />
+            </div>
           </header>
           <main class="flex-1 overflow-auto">
             <SpacesList />
@@ -98,6 +102,7 @@ function AppContent() {
             </div>
             <div class="flex items-center gap-3">
               <ServerStatus />
+              <ThemeSwitcher />
               <button
                 onClick={() => setShowAiSpace(!showAiSpace())}
                 class="text-sm px-3 py-1 rounded border border-border hover:bg-muted transition-colors"
