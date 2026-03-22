@@ -5,6 +5,7 @@ import { tmpdir } from "os";
 import { join } from "path";
 import { initRepo, attachWebSocket, getRepoUrls, getSpacesHandle, getSpaceDocHandles } from "./data/repo.js";
 import { registerMcpRoutes } from "./mcp/server.js";
+import { searchAcademic, searchWeb } from "./search/data-access/search.service.js";
 
 const PORT_FILE = join(tmpdir(), "scripta-server.port");
 
@@ -62,6 +63,50 @@ async function main() {
   app.delete("/active-space", (_req, res) => {
     _activeSpaceId = null;
     res.json({ ok: true });
+  });
+
+  // ── Search Endpunkte ─────────────────────────────────────────────────
+  // GET /search/academic?q=<query>&engine=openalex|semanticscholar|arxiv&limit=10
+  app.get("/search/academic", async (req, res) => {
+    const q = String(req.query["q"] ?? "").trim();
+    if (!q) {
+      res.status(400).json({ error: "q is required" });
+      return;
+    }
+    const engine = (req.query["engine"] as "openalex" | "semanticscholar" | "arxiv" | undefined) ?? "openalex";
+    const limit = Math.min(Math.max(parseInt(String(req.query["limit"] ?? "10")), 1), 25);
+    try {
+      const results = await searchAcademic(q, { engine, limit });
+      res.json(results);
+    } catch (err) {
+      res.status(502).json({ error: String(err) });
+    }
+  });
+
+  // GET /search/web?q=<query>&limit=10  (requires BRAVE_SEARCH_API_KEY)
+  app.get("/search/web", async (req, res) => {
+    const q = String(req.query["q"] ?? "").trim();
+    if (!q) {
+      res.status(400).json({ error: "q is required" });
+      return;
+    }
+    const limit = Math.min(Math.max(parseInt(String(req.query["limit"] ?? "10")), 1), 20);
+    try {
+      const results = await searchWeb(q, { limit });
+      res.json(results);
+    } catch (err) {
+      const msg = String(err);
+      const status = msg.includes("BRAVE_SEARCH_API_KEY") ? 501 : 502;
+      res.status(status).json({ error: msg });
+    }
+  });
+
+  // GET /search/config — informiert den Client, welche Engines verfügbar sind
+  app.get("/search/config", (_req, res) => {
+    res.json({
+      academic: ["openalex", "semanticscholar", "arxiv"],
+      web: !!process.env["BRAVE_SEARCH_API_KEY"],
+    });
   });
 
   // ── MCP Endpunkt ────────────────────────────────────────────────────

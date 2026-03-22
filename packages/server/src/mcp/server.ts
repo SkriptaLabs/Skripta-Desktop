@@ -5,6 +5,7 @@ import type { Router } from "express";
 import { registerNotesTools } from "../notes/mcp/notes.tools.js";
 import { registerSourcesTools } from "../sources/mcp/sources.tools.js";
 import { registerSpacesTools } from "../spaces/mcp/spaces.tools.js";
+import { registerSearchTools } from "../search/mcp/search.tools.js";
 
 // Einer MCP-Server, aber je Client-Session ein eigener Transport
 export const mcpServer = new McpServer({
@@ -16,6 +17,7 @@ export const mcpServer = new McpServer({
 registerSpacesTools(mcpServer);
 registerNotesTools(mcpServer);
 registerSourcesTools(mcpServer);
+registerSearchTools(mcpServer);
 
 // Session-Map für Stateful Streamable HTTP
 const transports = new Map<string, StreamableHTTPServerTransport>();

@@ -91,6 +91,9 @@ GET /repo-urls              → { spacesUrl }
 POST /active-space          → sets active space (body: { spaceId })
 GET /active-space           → returns active space { id, name, description } or null
 DELETE /active-space         → clears active space
+GET /search/academic        → ?q=<query>&engine=openalex|semanticscholar|arxiv&limit=10
+GET /search/web             → ?q=<query>&limit=10  (requires BRAVE_SEARCH_API_KEY)
+GET /search/config          → { academic: [...], web: boolean }
 POST|GET|DELETE /mcp        → MCP Streamable HTTP transport
 ```
 
@@ -108,6 +111,8 @@ WebSocket upgrade on the same port for Automerge sync.
 | `list_sources` | — | requires active space |
 | `add_source` | sources | requires active space |
 | `add_quote` | sources | requires active space |
+| `search_academic` | — | OpenAlex / Semantic Scholar / arXiv, no active space required |
+| `search_web` | — | Brave Search API, needs BRAVE_SEARCH_API_KEY |
 
 Agents NEVER write to userspace directly.
 All note/source tools operate on the currently active space.

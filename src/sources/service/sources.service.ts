@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { v4 as uuidv4 } from "uuid";
 import type { Source } from "../sources.types";
 import type { DocHandle } from "@automerge/automerge-repo";
 import type { SourcesCollection } from "../../data/repo.context";
@@ -56,5 +57,24 @@ export function useSources(handle: DocHandle<SourcesCollection> | null) {
     [handle, refresh]
   );
 
-  return { sources, loading, search };
+  const addSource = useCallback(
+    (dto: { title: string; authors?: string[]; year?: number; url?: string }) => {
+      if (!handle) return;
+      const source: Source = {
+        id: uuidv4(),
+        title: dto.title,
+        authors: dto.authors ?? [],
+        year: dto.year,
+        url: dto.url,
+        quotes: [],
+        createdAt: new Date().toISOString(),
+      };
+      handle.change((doc) => {
+        doc.sources[source.id] = source;
+      });
+    },
+    [handle]
+  );
+
+  return { sources, loading, search, addSource };
 }
