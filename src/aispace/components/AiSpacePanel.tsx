@@ -40,7 +40,7 @@ export function AiSpacePanel() {
         >
           <ul class="flex flex-col gap-2">
             <For each={notes()}>{(note) => (
-              <li class="p-3 rounded border border-border bg-muted/50">
+              <li class="p-3 rounded border border-border bg-muted">
                 <p class="text-sm font-medium">{note.title || "(Ohne Titel)"}</p>
                 <Show when={note.content}>
                   <p class="text-xs text-foreground/60 mt-1 line-clamp-3 whitespace-pre-wrap">

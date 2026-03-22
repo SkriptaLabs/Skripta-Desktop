@@ -54,7 +54,7 @@ export function ThemeSwitcher() {
       </button>
 
       <Show when={isOpen()}>
-        <div class="absolute right-0 mt-2 w-80 bg-background border border-border rounded-lg shadow-lg z-50 overflow-hidden">
+        <div class="absolute right-0 mt-2 w-80 bg-background border border-border rounded-lg shadow-lg z-[100] overflow-hidden">
           <div class="p-3 border-b border-border">
             <h3 class="text-sm font-semibold">Design auswählen</h3>
           </div>
@@ -142,7 +142,7 @@ export function ThemeSwitcher() {
       {/* Backdrop to close dropdown */}
       <Show when={isOpen()}>
         <div
-          class="fixed inset-0 z-40"
+          class="fixed inset-0 z-[90] bg-black/20"
           onClick={() => setIsOpen(false)}
           aria-hidden="true"
         />
