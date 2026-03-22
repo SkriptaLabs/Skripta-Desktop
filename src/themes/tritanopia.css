@@ -1,0 +1,13 @@
+/* Tritanopia Theme - For users with blue-yellow color blindness (rare) */
+[data-theme="tritanopia"] {
+  --color-background: #ffffff;
+  --color-foreground: #1a1a1a;
+  --color-muted: #f0f0f0;
+  --color-border: #d0d0d0;
+  /* Use red-cyan color palette instead of blue-yellow */
+  --color-accent: #cc0066;
+  --color-accent-hover: #990044;
+  --color-success: #00cc99; /* Cyan instead of green */
+  --color-error: #cc0066; /* Magenta instead of red */
+  --color-warning: #009999; /* Teal for distinction */
+}
