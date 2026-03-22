@@ -30,7 +30,7 @@ interface RepoContextValue {
   userspaceHandle: Accessor<DocHandle<NotesCollection> | null>;
   aispaceHandle: Accessor<DocHandle<NotesCollection> | null>;
   sourcesHandle: Accessor<DocHandle<SourcesCollection> | null>;
-  selectSpace: (spaceId: number) => Promise<void>;
+  selectSpace: (spaceId: string) => Promise<void>;
   leaveSpace: () => Promise<void>;
   ready: Accessor<boolean>;
   port: Accessor<number | null>;
@@ -96,7 +96,7 @@ export function RepoProvider(props: ParentProps) {
     onCleanup(() => { cancelled = true; });
   });
 
-  const selectSpace = async (spaceId: number) => {
+  const selectSpace = async (spaceId: string) => {
     const r = repo();
     const sh = spacesHandle();
     const p = port();
@@ -104,7 +104,7 @@ export function RepoProvider(props: ParentProps) {
 
     const doc = sh.docSync();
     if (!doc) return;
-    const space = doc.spaces[spaceId];
+    const space = doc.spaces[spaceId] ?? doc.spaces[Number(spaceId)];
     if (!space) return;
 
     const [ush, ash, srch] = await Promise.all([

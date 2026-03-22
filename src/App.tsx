@@ -8,7 +8,35 @@ import { SpacesList } from "./spaces/components/SpacesList";
 import { useSpaces } from "./spaces/service/spaces.service";
 import { MenuLevel } from "./menu/MenuLevel";
 import type { MenuItem } from "./menu/menu.types";
-import { ThemeSwitcher } from "./themes/components/ThemeSwitcher";
+import { createThemeEffect, useTheme } from 'solid-compose';
+
+function ThemeSwitcher() {
+  const [theme, setTheme] = useTheme();
+  return <select
+    class="text-sm px-2 py-1 rounded border border-border bg-background text-foreground"
+    value={theme()}
+    onChange={(e) => setTheme(e.currentTarget.value)}
+  >
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="high_contrast">High Contrast</option>
+  </select>
+};
+
+function StartupScreen() {
+  return <div class="flex flex-col h-screen bg-background text-foreground">
+    <header class="flex items-center justify-between px-4 py-2 border-b border-border">
+      <h1 class="text-lg font-semibold tracking-tight">Scripta</h1>
+      <div class="flex items-center gap-3">
+        <ThemeSwitcher />
+        <ServerStatus />
+      </div>
+    </header>
+    <main class="flex-1 overflow-auto">
+      <SpacesList />
+    </main>
+  </div>
+};
 
 function AppContent() {
   const { activeSpace, leaveSpace, spacesHandle } = useRepo();
@@ -17,6 +45,8 @@ function AppContent() {
   const [editingName, setEditingName] = createSignal(false);
   const [nameValue, setNameValue] = createSignal("");
   let nameInputRef: HTMLInputElement | undefined;
+
+  createThemeEffect();
 
   createEffect(() => {
     if (editingName() && nameInputRef) {
@@ -42,20 +72,7 @@ function AppContent() {
   return (
     <Show
       when={activeSpace()}
-      fallback={
-        <div class="flex flex-col h-screen bg-background text-foreground">
-          <header class="flex items-center justify-between px-4 py-2 border-b border-border">
-            <h1 class="text-lg font-semibold tracking-tight">Scripta</h1>
-            <div class="flex items-center gap-3">
-              <ThemeSwitcher />
-              <ServerStatus />
-            </div>
-          </header>
-          <main class="flex-1 overflow-auto">
-            <SpacesList />
-          </main>
-        </div>
-      }
+      fallback={<StartupScreen />}
     >
       {(space) => (
         <div class="flex flex-col h-screen bg-background text-foreground">
@@ -101,8 +118,8 @@ function AppContent() {
               </div>
             </div>
             <div class="flex items-center gap-3">
-              <ServerStatus />
               <ThemeSwitcher />
+              <ServerStatus />
               <button
                 onClick={() => setShowAiSpace(!showAiSpace())}
                 class="text-sm px-3 py-1 rounded border border-border hover:bg-muted transition-colors"

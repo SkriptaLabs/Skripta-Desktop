@@ -9,9 +9,9 @@ import { registerMcpRoutes } from "./mcp/server.js";
 const PORT_FILE = join(tmpdir(), "scripta-server.port");
 
 // ── Active-Space State ──────────────────────────────────────────────
-let _activeSpaceId: number | null = null;
+let _activeSpaceId: string | null = null;
 
-export function getActiveSpaceId(): number | null {
+export function getActiveSpaceId(): string | null {
   return _activeSpaceId;
 }
 
@@ -30,17 +30,17 @@ async function main() {
   // ── Active-Space Endpoints ────────────────────────────────────────
   app.post("/active-space", (req, res) => {
     const { spaceId } = req.body;
-    if (typeof spaceId !== "number") {
-      res.status(400).json({ error: "spaceId (number) is required" });
+    if (typeof spaceId !== "string") {
+      res.status(400).json({ error: "spaceId (string) is required" });
       return;
     }
     const spaces = getSpacesHandle().docSync().spaces;
-    if (!spaces[spaceId]) {
+    if (!spaces[spaceId] && !spaces[Number(spaceId)]) {
       res.status(404).json({ error: `Space '${spaceId}' not found` });
       return;
     }
     _activeSpaceId = spaceId;
-    const space = spaces[spaceId];
+    const space = spaces[spaceId] ?? spaces[Number(spaceId)];
     res.json({ id: space.id, name: space.name, description: space.description });
   });
 
@@ -50,7 +50,7 @@ async function main() {
       return;
     }
     const spaces = getSpacesHandle().docSync().spaces;
-    const space = spaces[_activeSpaceId];
+    const space = spaces[_activeSpaceId] ?? spaces[Number(_activeSpaceId)];
     if (!space) {
       _activeSpaceId = null;
       res.json(null);

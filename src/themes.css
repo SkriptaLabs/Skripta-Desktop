@@ -1,0 +1,39 @@
+/* ===== Light (default) ===== */
+html[data-theme='light'],
+:root {
+  --theme-background: #ffffff;
+  --theme-foreground: #171717;
+  --theme-muted: #f5f5f5;
+  --theme-border: #e5e5e5;
+  --theme-accent: #3b82f6;
+  --theme-accent-hover: #2563eb;
+  --theme-success: #22c55e;
+  --theme-error: #ef4444;
+  --theme-warning: #f59e0b;
+}
+
+/* ===== Dark ===== */
+html[data-theme='dark'] {
+  --theme-background: #0a0a0a;
+  --theme-foreground: #ededed;
+  --theme-muted: #1a1a1a;
+  --theme-border: #2a2a2a;
+  --theme-accent: #60a5fa;
+  --theme-accent-hover: #3b82f6;
+  --theme-success: #22c55e;
+  --theme-error: #f87171;
+  --theme-warning: #fbbf24;
+}
+
+/* ===== High Contrast ===== */
+html[data-theme='high_contrast'] {
+  --theme-background: #000000;
+  --theme-foreground: #ffffff;
+  --theme-muted: #1a1a1a;
+  --theme-border: #ffffff;
+  --theme-accent: #ffff00;
+  --theme-accent-hover: #ffcc00;
+  --theme-success: #00ff00;
+  --theme-error: #ff0000;
+  --theme-warning: #ff9900;
+}

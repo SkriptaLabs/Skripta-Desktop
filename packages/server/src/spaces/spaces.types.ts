@@ -1,5 +1,5 @@
 export interface Space {
-  id: number;
+  id: string;
   name: string;
   description: string;
   userspaceUrl: string;
@@ -10,5 +10,5 @@ export interface Space {
 }
 
 export interface SpacesCollection {
-  spaces: Record<number, Space>;
+  spaces: Record<string, Space>;
 }

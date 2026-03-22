@@ -1,0 +1,116 @@
+{
+  "system_theme_config": {
+    "dark": "dark",
+    "light": "light"
+  },
+  "themes": {
+    "light": {
+      "config": {
+        "icon": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><circle cx='12' cy='12' r='5'/><path d='M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42'/></svg>",
+        "browser_theme_color": "#ffffff"
+      },
+      "vars": {
+        "background": "#ffffff",
+        "foreground": "#171717",
+        "muted": "#f5f5f5",
+        "border": "#e5e5e5",
+        "accent": "#3b82f6",
+        "accent_hover": "#2563eb",
+        "success": "#22c55e",
+        "error": "#ef4444",
+        "warning": "#f59e0b",
+        "button_radius": "0.5em"
+      }
+    },
+    "dark": {
+      "config": {
+        "icon": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><path d='M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z'/></svg>",
+        "browser_theme_color": "#0a0a0a"
+      },
+      "vars": {
+        "background": "#0a0a0a",
+        "foreground": "#ededed",
+        "muted": "#1a1a1a",
+        "border": "#2a2a2a",
+        "accent": "#60a5fa",
+        "accent_hover": "#3b82f6",
+        "success": "#22c55e",
+        "error": "#f87171",
+        "warning": "#fbbf24",
+        "button_radius": "0.5em"
+      }
+    },
+    "high_contrast": {
+      "config": {
+        "icon": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><circle cx='12' cy='12' r='10'/><path d='M12 2a10 10 0 010 20V2z' fill='currentColor'/></svg>",
+        "browser_theme_color": "#000000"
+      },
+      "vars": {
+        "background": "#000000",
+        "foreground": "#ffffff",
+        "muted": "#1a1a1a",
+        "border": "#ffffff",
+        "accent": "#ffff00",
+        "accent_hover": "#ffcc00",
+        "success": "#00ff00",
+        "error": "#ff0000",
+        "warning": "#ff9900",
+        "button_radius": "0.5em"
+      }
+    },
+    "deuteranopia": {
+      "config": {
+        "icon": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><path d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z'/><circle cx='12' cy='12' r='3'/></svg>",
+        "browser_theme_color": "#ffffff"
+      },
+      "vars": {
+        "background": "#ffffff",
+        "foreground": "#1a1a1a",
+        "muted": "#f0f0f0",
+        "border": "#d0d0d0",
+        "accent": "#0066cc",
+        "accent_hover": "#004499",
+        "success": "#0066cc",
+        "error": "#ffaa00",
+        "warning": "#6600cc",
+        "button_radius": "0.5em"
+      }
+    },
+    "protanopia": {
+      "config": {
+        "icon": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><path d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z'/><circle cx='12' cy='12' r='3'/></svg>",
+        "browser_theme_color": "#ffffff"
+      },
+      "vars": {
+        "background": "#ffffff",
+        "foreground": "#1a1a1a",
+        "muted": "#f0f0f0",
+        "border": "#d0d0d0",
+        "accent": "#0077cc",
+        "accent_hover": "#005599",
+        "success": "#0077cc",
+        "error": "#ff9900",
+        "warning": "#7700cc",
+        "button_radius": "0.5em"
+      }
+    },
+    "tritanopia": {
+      "config": {
+        "icon": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><path d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z'/><circle cx='12' cy='12' r='3'/></svg>",
+        "browser_theme_color": "#ffffff"
+      },
+      "vars": {
+        "background": "#ffffff",
+        "foreground": "#1a1a1a",
+        "muted": "#f0f0f0",
+        "border": "#d0d0d0",
+        "accent": "#cc0066",
+        "accent_hover": "#990044",
+        "success": "#00cc99",
+        "error": "#cc0066",
+        "warning": "#009999",
+        "button_radius": "0.5em"
+      }
+    }
+  }
+}

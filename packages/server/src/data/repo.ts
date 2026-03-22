@@ -89,8 +89,9 @@ export function getSpacesHandle() {
   };
 }
 
-export async function getSpaceDocHandles(spaceId: number) {
-  const space = getSpacesHandle().docSync().spaces[spaceId];
+export async function getSpaceDocHandles(spaceId: string) {
+  const spaces = getSpacesHandle().docSync().spaces;
+  const space = spaces[spaceId] ?? spaces[Number(spaceId)];
   if (!space) throw new Error(`Space '${spaceId}' not found`);
 
   const [userspace, aispace, sources] = await Promise.all([

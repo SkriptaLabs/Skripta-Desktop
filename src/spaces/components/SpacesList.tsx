@@ -9,7 +9,7 @@ export function SpacesList() {
   const { spaces, loading, addSpace, editSpace, removeSpace } = useSpaces(spacesHandle, repo);
   const [creating, setCreating] = createSignal(false);
   const [editing, setEditing] = createSignal<Space | null>(null);
-  const [confirmDelete, setConfirmDelete] = createSignal<number | null>(null);
+  const [confirmDelete, setConfirmDelete] = createSignal<string | null>(null);
 
   const handleCreate = (data: { name: string; description: string }) => {
     addSpace(data);
@@ -23,7 +23,7 @@ export function SpacesList() {
     setEditing(null);
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     removeSpace(id);
     setConfirmDelete(null);
   };
