@@ -94,7 +94,7 @@ function AppContent() {
                       if (e.key === "Enter") commitName();
                       if (e.key === "Escape") setEditingName(false);
                     }}
-                    class="text-lg font-semibold tracking-tight bg-transparent border-b border-foreground/30 focus:border-foreground outline-none w-full"
+                    class="text-lg font-semibold tracking-tight bg-background border-b border-foreground/50 focus:border-foreground outline-none w-full px-1"
                   />
                 </Show>
                 <p class="text-xs text-foreground/50">{space().description}</p>

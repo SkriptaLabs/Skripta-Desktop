@@ -89,7 +89,7 @@ export function SpacesList() {
         >
           <ul class="flex flex-col gap-2">
             <For each={spaces()}>{(space) => (
-              <li class="flex items-start justify-between p-4 rounded border border-border hover:bg-muted/50 transition-colors group">
+              <li class="flex items-start justify-between p-4 rounded border border-border hover:bg-muted transition-colors group">
                 <button
                   onClick={() => selectSpace(space.id)}
                   class="flex-1 min-w-0 text-left cursor-pointer"
