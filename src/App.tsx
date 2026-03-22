@@ -1,10 +1,13 @@
 import { createSignal, createEffect, Show } from "solid-js";
 import { NotesPanel } from "./notes/components/NotesPanel";
 import { AiSpacePanel } from "./aispace/components/AiSpacePanel";
+import { SourcesPanel } from "./sources/components/SourcesPanel";
 import { ServerStatus } from "./settings/components/ServerStatus";
 import { RepoProvider, useRepo } from "./data/repo.context";
 import { SpacesList } from "./spaces/components/SpacesList";
 import { useSpaces } from "./spaces/service/spaces.service";
+import { MenuLevel } from "./menu/MenuLevel";
+import type { MenuItem } from "./menu/menu.types";
 
 function AppContent() {
   const { activeSpace, leaveSpace, spacesHandle } = useRepo();
@@ -29,6 +32,11 @@ function AppContent() {
     }
     setEditingName(false);
   };
+
+  const mainMenuItems: MenuItem[] = [
+    { id: "notes", label: "Notizen", component: NotesPanel },
+    { id: "sources", label: "Quellen", component: SourcesPanel },
+  ];
 
   return (
     <Show
@@ -100,8 +108,8 @@ function AppContent() {
           </header>
 
           <div class="flex flex-1 overflow-hidden">
-            <main class={`flex-1 overflow-auto ${showAiSpace() ? "border-r border-border" : ""}`}>
-              <NotesPanel />
+            <main class={`flex-1 overflow-hidden ${showAiSpace() ? "border-r border-border" : ""}`}>
+              <MenuLevel items={mainMenuItems} level={1} />
             </main>
             <Show when={showAiSpace()}>
               <aside class="w-96 overflow-auto">
