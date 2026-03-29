@@ -8,7 +8,8 @@ import {
   type Accessor,
 } from "solid-js";
 import { getOrCreateClientRepo } from "./repo";
-import { getServerPort } from "../settings/data-access/server.api";
+import { getServerPort, getServers } from "../settings/data-access/server.api";
+import { BrowserWebSocketClientAdapter } from "@automerge/automerge-repo-network-websocket";
 import type { DocHandle, Repo } from "@automerge/automerge-repo";
 import type { Note } from "../notes/notes.types";
 import type { Source } from "../sources/sources.types";
@@ -58,6 +59,9 @@ export function RepoProvider(props: ParentProps) {
   const [aispaceHandle, setAispaceHandle] = createSignal<DocHandle<NotesCollection> | null>(null);
   const [sourcesHandle, setSourcesHandle] = createSignal<DocHandle<SourcesCollection> | null>(null);
   const [ready, setReady] = createSignal(false);
+
+  // Tracks remote WS adapters added per space (keyed by spaceId)
+  const _remoteAdapters = new Map<string, BrowserWebSocketClientAdapter>();
 
   // Phase 1: Connect to server and load spaces doc
   onMount(() => {
@@ -115,6 +119,22 @@ export function RepoProvider(props: ParentProps) {
 
     await Promise.all([ush.whenReady(), ash.whenReady(), srch.whenReady()]);
 
+    // Connect to remote sync server if space has one configured
+    if (space.syncServerId) {
+      try {
+        const servers = await getServers(p);
+        const server = servers.find((s) => s.id === space.syncServerId);
+        if (server) {
+          const wsUrl = server.url.replace(/^http:\/\//, "ws://").replace(/^https:\/\//, "wss://");
+          const adapter = new BrowserWebSocketClientAdapter(wsUrl);
+          r.networkSubsystem.addNetworkAdapter(adapter);
+          _remoteAdapters.set(spaceId, adapter);
+        }
+      } catch {
+        // Non-fatal: sync still works via local mcp_server
+      }
+    }
+
     // Notify server of active space
     await fetch(`http://localhost:${p}/active-space`, {
       method: "POST",
@@ -130,6 +150,17 @@ export function RepoProvider(props: ParentProps) {
 
   const leaveSpace = async () => {
     const p = port();
+    const leaving = activeSpace();
+
+    // Disconnect remote sync adapter if one was added for this space
+    if (leaving) {
+      const adapter = _remoteAdapters.get(leaving.id);
+      if (adapter) {
+        try { adapter.disconnect(); } catch { /* ignore */ }
+        _remoteAdapters.delete(leaving.id);
+      }
+    }
+
     if (p) {
       await fetch(`http://localhost:${p}/active-space`, { method: "DELETE" });
     }

@@ -4,7 +4,7 @@ import {
   listNotes,
   createNote,
   searchNotes,
-} from "../../notes/data-access/notes.repo.js";
+} from "../data-access/notes.repo.js";
 
 /**
  * Registriert MCP-Tools für das Notes-Feature auf dem MCP-Server.

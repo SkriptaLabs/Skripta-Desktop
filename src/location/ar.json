@@ -59,5 +59,25 @@
   "spaceForm.descriptionPlaceholder": "ما هو هذا الفضاء؟ (مثلاً موضوع بحث، ورقة ندوة…)",
   "spaceForm.cancel": "إلغاء",
   "spaceForm.save": "حفظ",
-  "spaceForm.create": "إنشاء"
+  "spaceForm.create": "إنشاء",
+  "spaceForm.syncServer": "خادم المزامنة",
+  "spaceForm.noServer": "لا شيء",
+
+  "settings.title": "الإعدادات",
+  "settings.back": "رجوع",
+
+  "servers.title": "خوادم المزامنة",
+  "servers.addServer": "+ إضافة خادم",
+  "servers.namePlaceholder": "اسم الخادم…",
+  "servers.urlPlaceholder": "https://your-server.example.com",
+  "servers.nameRequired": "الاسم مطلوب.",
+  "servers.urlRequired": "الرابط مطلوب.",
+  "servers.testFirst": "يرجى اختبار الاتصال أولاً.",
+  "servers.test": "اختبار",
+  "servers.testOk": "الاتصال ناجح",
+  "servers.testFail": "فشل الاتصال",
+  "servers.delete": "حذف",
+  "servers.local": "محلي",
+  "servers.save": "حفظ",
+  "servers.empty": "لم يتم تكوين أي خوادم بعد."
 }

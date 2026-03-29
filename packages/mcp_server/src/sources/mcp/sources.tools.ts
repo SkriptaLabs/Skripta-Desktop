@@ -5,7 +5,7 @@ import {
   searchSources,
   createSource,
   addQuote,
-} from "../../sources/data-access/sources.repo.js";
+} from "../data-access/sources.repo.js";
 
 /**
  * Registriert MCP-Tools für das Sources-Feature.

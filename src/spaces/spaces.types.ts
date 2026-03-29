@@ -6,6 +6,7 @@ export interface Space {
   aispaceUrl: string;
   // points to automerge doc
   sourcesUrl: string;
+  syncServerId?: string;
   createdAt: string;
   updatedAt: string;
 }

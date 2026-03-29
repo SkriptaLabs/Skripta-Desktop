@@ -38,7 +38,7 @@ export function createSpace(dto: { name: string; description: string }): Space {
 
 export function updateSpace(
   id: string,
-  patch: Partial<Pick<Space, "name" | "description">>
+  patch: Partial<Pick<Space, "name" | "description" | "syncServerId">>
 ): Space | undefined {
   const handle = getSpacesHandle();
   const spaces = handle.docSync().spaces;
@@ -50,6 +50,7 @@ export function updateSpace(
     if (!s) return;
     if (patch.name !== undefined) s.name = patch.name;
     if (patch.description !== undefined) s.description = patch.description;
+    if (patch.syncServerId !== undefined) s.syncServerId = patch.syncServerId;
     s.updatedAt = new Date().toISOString();
   });
 

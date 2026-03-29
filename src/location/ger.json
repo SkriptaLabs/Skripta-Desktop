@@ -59,5 +59,25 @@
   "spaceForm.descriptionPlaceholder": "Wofür ist dieser Space? (z.B. Forschungsthema, Seminararbeit…)",
   "spaceForm.cancel": "Abbrechen",
   "spaceForm.save": "Speichern",
-  "spaceForm.create": "Erstellen"
+  "spaceForm.create": "Erstellen",
+  "spaceForm.syncServer": "Sync-Server",
+  "spaceForm.noServer": "Keiner",
+
+  "settings.title": "Einstellungen",
+  "settings.back": "Zurück",
+
+  "servers.title": "Sync-Server",
+  "servers.addServer": "+ Server hinzufügen",
+  "servers.namePlaceholder": "Servername…",
+  "servers.urlPlaceholder": "https://dein-server.example.com",
+  "servers.nameRequired": "Name ist erforderlich.",
+  "servers.urlRequired": "URL ist erforderlich.",
+  "servers.testFirst": "Bitte erst die Verbindung testen.",
+  "servers.test": "Testen",
+  "servers.testOk": "Verbindung erfolgreich",
+  "servers.testFail": "Verbindung fehlgeschlagen",
+  "servers.delete": "Löschen",
+  "servers.local": "lokal",
+  "servers.save": "Speichern",
+  "servers.empty": "Noch keine Server konfiguriert."
 }

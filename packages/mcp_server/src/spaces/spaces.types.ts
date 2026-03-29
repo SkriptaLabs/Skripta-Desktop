@@ -5,6 +5,7 @@ export interface Space {
   userspaceUrl: string;
   aispaceUrl: string;
   sourcesUrl: string;
+  syncServerId?: string;
   createdAt: string;
   updatedAt: string;
 }

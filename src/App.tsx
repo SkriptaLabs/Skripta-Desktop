@@ -3,6 +3,8 @@ import { NotesPanel } from "./notes/components/NotesPanel";
 import { AiSpacePanel } from "./aispace/components/AiSpacePanel";
 import { SourcesPanel } from "./sources/components/SourcesPanel";
 import { ServerStatus } from "./settings/components/ServerStatus";
+import { SettingsScreen } from "./settings/components/SettingsScreen";
+import { SpaceServerStatus } from "./settings/components/SpaceServerStatus";
 import { RepoProvider, useRepo } from "./data/repo.context";
 import { SpacesList } from "./spaces/components/SpacesList";
 import { useSpaces } from "./spaces/service/spaces.service";
@@ -38,19 +40,33 @@ function ThemeSwitcher() {
 };
 
 function StartupScreen() {
+  const [showSettings, setShowSettings] = createSignal(false);
   const t = useI18n();
   return <div class="flex flex-col h-screen bg-background text-foreground">
-    <header class="flex items-center justify-between px-4 py-2 border-b border-border">
-      <h1 class="text-lg font-semibold tracking-tight">{t('app.title')}</h1>
-      <div class="flex items-center gap-3">
-        <LanguageSwitcher />
-        <ThemeSwitcher />
-        <ServerStatus />
-      </div>
-    </header>
-    <main class="flex-1 overflow-auto">
-      <SpacesList />
-    </main>
+    <Show when={showSettings()} fallback={
+      <>
+        <header class="flex items-center justify-between px-4 py-2 border-b border-border">
+          <h1 class="text-lg font-semibold tracking-tight">{t('app.title')}</h1>
+          <div class="flex items-center gap-3">
+            <LanguageSwitcher />
+            <ThemeSwitcher />
+            <button
+              onClick={() => setShowSettings(true)}
+              class="text-sm px-2 py-1 rounded border border-border hover:bg-muted transition-colors"
+              title={t('settings.title')}
+            >
+              ⚙
+            </button>
+            <ServerStatus />
+          </div>
+        </header>
+        <main class="flex-1 overflow-auto">
+          <SpacesList />
+        </main>
+      </>
+    }>
+      <SettingsScreen onBack={() => setShowSettings(false)} />
+    </Show>
   </div>
 };
 
@@ -137,7 +153,7 @@ function AppContent() {
             <div class="flex items-center gap-3">
               <LanguageSwitcher />
               <ThemeSwitcher />
-              <ServerStatus />
+              <SpaceServerStatus />
               <button
                 onClick={() => setShowAiSpace(!showAiSpace())}
                 class="text-sm px-3 py-1 rounded border border-border hover:bg-muted transition-colors"

@@ -42,6 +42,7 @@ export interface SourcesCollection {
 
 interface RepoState {
   spacesUrl: string;
+  servers?: unknown[];
 }
 
 const DATA_DIR = join(homedir(), ".scripta");
@@ -67,11 +68,17 @@ export async function initRepo() {
     } else {
       // Old format (userspaceUrl/aispaceUrl/sourcesUrl) — create fresh spaces doc
       _spacesHandle = _repo.create<SpacesCollection>({ spaces: {} });
-      writeFileSync(STATE_FILE, JSON.stringify({ spacesUrl: _spacesHandle.url }, null, 2));
+      writeFileSync(STATE_FILE, JSON.stringify({ spacesUrl: _spacesHandle.url, servers: [] }, null, 2));
+    }
+
+    // Migrate: ensure servers field exists
+    if (!Array.isArray(raw.servers)) {
+      raw.servers = [];
+      writeFileSync(STATE_FILE, JSON.stringify(raw, null, 2));
     }
   } else {
     _spacesHandle = _repo.create<SpacesCollection>({ spaces: {} });
-    writeFileSync(STATE_FILE, JSON.stringify({ spacesUrl: _spacesHandle.url }, null, 2));
+    writeFileSync(STATE_FILE, JSON.stringify({ spacesUrl: _spacesHandle.url, servers: [] }, null, 2));
   }
 
   await _spacesHandle.whenReady();

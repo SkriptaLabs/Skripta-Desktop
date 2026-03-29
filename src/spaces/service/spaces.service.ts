@@ -38,7 +38,7 @@ export function useSpaces(
     onCleanup(() => h.off("change", refresh));
   });
 
-  const addSpace = (dto: { name: string; description: string }) => {
+  const addSpace = (dto: { name: string; description: string; syncServerId?: string }) => {
     const h = handle();
     const r = repo?.();
     if (!h || !r) return;
@@ -55,6 +55,7 @@ export function useSpaces(
       userspaceUrl: userspace.url,
       aispaceUrl: aispace.url,
       sourcesUrl: sources.url,
+      ...(dto.syncServerId ? { syncServerId: dto.syncServerId } : {}),
       createdAt: now,
       updatedAt: now,
     };
@@ -67,7 +68,7 @@ export function useSpaces(
     return space;
   };
 
-  const editSpace = (id: string, patch: Partial<Pick<Space, "name" | "description">>) => {
+  const editSpace = (id: string, patch: Partial<Pick<Space, "name" | "description" | "syncServerId">>) => {
     const h = handle();
     if (!h) return;
 
@@ -76,6 +77,7 @@ export function useSpaces(
       if (!space) return;
       if (patch.name !== undefined) space.name = patch.name;
       if (patch.description !== undefined) space.description = patch.description;
+      if (patch.syncServerId !== undefined) space.syncServerId = patch.syncServerId;
       space.updatedAt = new Date().toISOString();
     });
     refresh();

@@ -13,12 +13,12 @@ export function SpacesList() {
   const [confirmDelete, setConfirmDelete] = createSignal<string | null>(null);
   const t = useI18n();
 
-  const handleCreate = (data: { name: string; description: string }) => {
+  const handleCreate = (data: { name: string; description: string; syncServerId?: string }) => {
     addSpace(data);
     setCreating(false);
   };
 
-  const handleEdit = (data: { name: string; description: string }) => {
+  const handleEdit = (data: { name: string; description: string; syncServerId?: string }) => {
     const e = editing();
     if (!e) return;
     editSpace(e.id, data);
