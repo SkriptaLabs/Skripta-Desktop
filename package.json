@@ -9,7 +9,8 @@
     "dev": "LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libpthread.so.0 tauri dev",
     "dev:all": "concurrently -n ui,mcp,files -c cyan,green,yellow \"vite\" \"DEV_PORT=3456 npm run dev --workspace=packages/mcp_server\" \"npm run dev --workspace=packages/file_server\"",
     "dev:ui": "vite",
-    "dev:server": "npm run dev --workspace=packages/server",
+    "dev:mcp-server": "npm run dev --workspace=packages/mcp_server",
+    "dev:file-server": "npm run dev --workspace=packages/file_server",
     "build": "tauri build",
     "build:ui": "vite build",
     "lint": "eslint src/"

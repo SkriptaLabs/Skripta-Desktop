@@ -11,6 +11,6 @@
     "verbatimModuleSyntax": true
   },
   "types": ["node", "path"],
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "../sync_server/index.ts"],
   "exclude": ["node_modules", "dist"]
 }
